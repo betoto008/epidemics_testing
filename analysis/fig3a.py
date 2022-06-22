@@ -7,7 +7,7 @@ import matplotlib.ticker as ticker
 import pickle
 from tqdm import tqdm
 
-Text_files_path = '../Text_files/'
+Text_files_path = '../Text_files/Testing_Networks/Stochastic/Networks/'
 
 
 #----Load data network of contacts----
@@ -99,15 +99,15 @@ for l, sigma in enumerate(tqdm(sigmas)):
         
         if(p==1.0):
             if(sigma==1000):
-                ax.plot(R0_array, ((1/R0_array)),linestyle = 'dashed', linewidth = 3, color = color_p, label = 'Fully-connected')
-                ax0.plot(R0_array, ((1/R0_array)),linestyle = 'dashed', linewidth = 3, color = color_p, alpha = .35)
+                ax.plot(R0_array, ((1/R0_array)),linestyle = 'dotted', linewidth = 3, color = color_p, label = 'Fully-connected')
+                ax0.plot(R0_array, ((1/R0_array)),linestyle = 'dotted', linewidth = 3, color = color_p, alpha = .35)
             if(sigma==1/4):
                 ax.plot(R0_array, ((1/R0_array)**2),linestyle = 'dashed', linewidth = 3, color = color_p, label = 'Fully-connected')
                 ax0.plot(R0_array, ((1/R0_array)**2),linestyle = 'dashed', linewidth = 3, color = color_p, label = 'Fully-connected')
         if(p==0.0):
             if(sigma==1000):
-                ax.plot(R0_array2, S_SIR ,linestyle = 'dashed', linewidth = 3, color = color_p, label = r'Network')
-                ax0.plot(R0_array2, S_SIR ,linestyle = 'dashed', linewidth = 3, color = color_p, alpha = .35)
+                ax.plot(R0_array2, S_SIR ,linestyle = 'dotted', linewidth = 3, color = color_p, label = r'Network')
+                ax0.plot(R0_array2, S_SIR ,linestyle = 'dotted', linewidth = 3, color = color_p, alpha = .35)
             if(sigma==1/4):
                 ax.plot(R0_array2, S_SEIR ,linestyle = 'dashed', linewidth = 3, color = color_p, label = r'Network')
                 ax.plot(R0_array2, S_SEIR2 ,linestyle = ':', linewidth = 3, color = color_p)

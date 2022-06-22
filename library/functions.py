@@ -85,7 +85,8 @@ def sort_nodes(p, beta, sigma, gamma, data_I, data_E, data_nodes, upper_limit):
 	#data_nodes = data_nodes[max_values!=0]
 	#max_values = max_values[max_values!=0]
 	#data_ext = np.array([((data_I[i,-1]==0) & (np.max(data_I[i,:]) < 20)) for i in np.arange(len(data_I[:,0]))])
-	data_ext = np.array([(((data_I[i,-1]==0) & (data_E[i,-1]==0)) & (np.max(data_I[i,:]) < upper_limit)) for i in np.arange(len(data_I[:,0]))])
+	#data_ext = np.array([(((data_I[i,-1]==0) & (data_E[i,-1]==0)) & (np.max(data_I[i,:]) < upper_limit)) for i in np.arange(len(data_I[:,0]))])
+	data_ext = np.array([(((data_I[i,-1]==0) & (data_E[i,-1]==0))) for i in np.arange(len(data_I[:,0]))])
 
 
 	nodes_ext = data_nodes[data_ext]
@@ -445,11 +446,17 @@ def run_network_trajectory(N, G, beta, sigma, gamma, T_total, p, initE, initI, f
 	init_degree = G.degree(init_node)
 
 	## Change status
-	if(model.numI[-1]>0 and np.max(model.numI)>10):
-	    status = 1
+	#if(model.numI[-1]>0 and np.max(model.numI)>10):
+	#    status = 1
+	#if(model.numI[-1]>0 and model.numE[-1]>0):
+	#    status = 1
+	I_peak = N*((sigma*gamma)/(beta*(sigma+gamma)))*(beta/gamma - 1 - np.log(beta/gamma))
+	print(I_peak, np.max(model.numI))
+	if(np.max(model.numI)>I_peak):
+		status = 1
 
 	if (save):
-		np.savetxt(folder+'/Xseries_R0%.1f_sigma%.2f_N%d_p%.1f.txt'%(beta/gamma, sigma, N, p), (model.Xseries), fmt = '%d')
+		np.savetxt(folder+'/Xseries_R0%.2f_sigma%.2f_N%d_p%.1f.txt'%(beta/gamma, sigma, N, p), (model.Xseries), fmt = '%d')
 
 	return model.tseries, model.numE, model.numI, status
 
@@ -466,17 +473,17 @@ def run_network_ensemble(N, G, G_name, beta, sigma, gamma, T_total, intervals, n
 
 		#Open files for trajectories
 
-		file_E = open(folder+'/ensemble_E_R0%.1f_sigma%.1f_N%.0f_p%.1f_'%(beta/gamma, sigma, N, p)+G_name+'.txt', 'a')
-		file_I = open(folder+'/ensemble_I_R0%.1f_sigma%.1f_N%.0f_p%.1f_'%(beta/gamma, sigma, N, p)+G_name+'.txt', 'a')
-		file_stats = open(folder+'/stats_R0%.1f_sigma%.1f_N%.0f_p%.1f_'%(beta/gamma, sigma, N, p)+G_name+'.txt', 'a')
+		file_E = open(folder+'/ensemble_E_R0%.2f_sigma%.1f_N%.0f_p%.1f_'%(beta/gamma, sigma, N, p)+G_name+'.txt', 'a')
+		file_I = open(folder+'/ensemble_I_R0%.2f_sigma%.1f_N%.0f_p%.1f_'%(beta/gamma, sigma, N, p)+G_name+'.txt', 'a')
+		file_stats = open(folder+'/stats_R0%.2f_sigma%.1f_N%.0f_p%.1f_'%(beta/gamma, sigma, N, p)+G_name+'.txt', 'a')
 
 	#Open file to save sammpling data
 	if(sampling):
-		file_sampling1 = open(folder+'/sampling_stats_R0%.1f_sigma%.1f_N%.0f_p%.1f_m%d_'%(beta/gamma,sigma, N, p, sample_sizes[0])+G_name+'.txt', 'a')
+		file_sampling1 = open(folder+'/sampling_stats_R0%.2f_sigma%.1f_N%.0f_p%.1f_m%d_'%(beta/gamma,sigma, N, p, sample_sizes[0])+G_name+'.txt', 'a')
 		#file_n1 = open(folder+'/detect_R0%.1f_sigma%.1f_N%.0f_p%.1f_m%d_'%(beta/gamma,sigma, N, p, 150)+G_name+'.txt', 'a')
-		file_sampling2 = open(folder+'/sampling_stats_R0%.1f_sigma%.1f_N%.0f_p%.1f_m%d_'%(beta/gamma,sigma, N, p, sample_sizes[1])+G_name+'.txt', 'a')
+		file_sampling2 = open(folder+'/sampling_stats_R0%.2f_sigma%.1f_N%.0f_p%.1f_m%d_'%(beta/gamma,sigma, N, p, sample_sizes[1])+G_name+'.txt', 'a')
 		#file_n2 = open(folder+'/detect_R0%.1f_sigma%.1f_N%.0f_p%.1f_m%d_'%(beta/gamma,sigma, N, p, 250)+G_name+'.txt', 'a')
-		file_sampling3 = open(folder+'/sampling_stats_R0%.1f_sigma%.1f_N%.0f_p%.1f_m%d_'%(beta/gamma,sigma, N, p, sample_sizes[2])+G_name+'.txt', 'a')
+		file_sampling3 = open(folder+'/sampling_stats_R0%.2f_sigma%.1f_N%.0f_p%.1f_m%d_'%(beta/gamma,sigma, N, p, sample_sizes[2])+G_name+'.txt', 'a')
 		#file_n3 = open(folder+'/detect_R0%.1f_sigma%.1f_N%.0f_p%.1f_m%d_'%(beta/gamma,sigma, N, p, 400)+G_name+'.txt', 'a')
 
 	#### Run ensemble of SEIR simulations
